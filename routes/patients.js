@@ -344,6 +344,8 @@ router.post(`/newPatient`, async function (req, res, next) {
         await conn.query(`insert into diseases (disease, usualMed, otherTreatment, HN, IDcard) values (?, ?, ?, ?, ?)`, [disease, usualMed, otherTreatment, HN, IDcard])
         if (allergyHis == 'แพ้') {
             await conn.query(`insert into allergy (allergyDetail, HN, IDcard) values (?, ?, ?)`, [allergy, HN, IDcard])
+        }else if (allergyHis == 'ไม่เคยแพ้'){
+            await conn.query(`insert into allergy (allergyDetail, HN, IDcard) values (?, ?, ?)`, ['ไม่มีประวัติการแพ้', HN, IDcard])
         }
         await conn.query(`insert into addictive (smoking, alcohol, nut, HN, IDcard) values (?, ?, ?, ?, ?)`, [smoking, alcohol, nut, HN, IDcard])
         if (smoking == 'สูบ' || smoking == 'เคยสูบ') {

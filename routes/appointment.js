@@ -268,6 +268,7 @@ router.get(`/thisappointment/:HN/:treatmentId`, async function (req, res, next) 
 router.post(`/sortAppointInfo`, async function (req, res, next) {
     const sortAppoint = req.body.sortAppoint
     let data = new Array
+    let cancer = new Array
     try {
         if (sortAppoint == '1') {
             const [row, f] = await pool.query(`select max(brId) as brId from patient 
@@ -529,15 +530,22 @@ router.get(`/checkAppoint`, async function (req, res, next) {
 
 router.get(`/AllAppointment`, async function (req, res, next) {
     let data = new Array()
+    let cancer = new Array()
     try {
         const [row, f] = await pool.query(`select max(brId) as brId from bloodresult join treatment on treatment.treatmentId=bloodresult.treatmentId join patient on treatment.HN=patient.HN where bloodresult.status='อนุมัติผลเลือด' group by patient.HN`)
         for (let i = 0; i < row.length; i++) {
             const [row1, f1] = await pool.query(`select max(appointId) as appointId from patient left join appointment on patient.HN=appointment.HN join treatment on treatment.HN=patient.HN join bloodresult on treatment.treatmentId=bloodresult.treatmentId where brId = ?`, row[i].brId)
             if (row1[0].appointId != null) {
                 const [row3, f3] = await pool.query(`select * from patient left join appointment on patient.HN=appointment.HN join treatment on treatment.treatmentId=appointment.treatmentId join bloodresult on treatment.treatmentId=bloodresult.treatmentId join formula on treatment.formulaId=formula.formulaId where appointment.appointId = ? and bloodresult.brId = ?`, [row1[0].appointId, row[i].brId])
+                const [row4, f4] = await pool.query(`select * from cancer join cancer_patient on cancer.cancerId=cancer_patient.cancerId join patient on patient.HN=cancer_patient.HN join treatment on treatment.HN=patient.HN join bloodresult on treatment.treatmentId=bloodresult.treatmentId where bloodresult.brId = ?`, row[i].brId)
+                cancer.push(row4)
+                row3[0].cancer = cancer
                 data.push(row3[0])
             } else {
                 const [row2, f2] = await pool.query(`select * from patient left join appointment on patient.HN=appointment.HN join treatment on treatment.HN=patient.HN join bloodresult on treatment.treatmentId=bloodresult.treatmentId join formula on treatment.formulaId=formula.formulaId where bloodresult.brId = ?`, row[i].brId)
+                const [row4, f4] = await pool.query(`select * from cancer join cancer_patient on cancer.cancerId=cancer_patient.cancerId join patient on patient.HN=cancer_patient.HN join treatment on treatment.HN=patient.HN join bloodresult on treatment.treatmentId=bloodresult.treatmentId where bloodresult.brId = ?`, row[i].brId)
+                cancer.push(row4)
+                row2[0].cancer = cancer
                 data.push(row2[0])
             }
         }

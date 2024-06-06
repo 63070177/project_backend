@@ -74,8 +74,8 @@ router.post(`/sortInfo`, async function (req, res, next) {
                 for (j = 0; j < row1.length; j++) {
                     cancer.push(row1[j])
                 }
-                row[i].cancer = cancer
-                data.push(row)
+                row[0].cancer = cancer
+                data.push(row[0])
             }
         } else if (sortInfo == '2') {
             for (let i = 0; i < rows.length; i++) {
@@ -84,8 +84,8 @@ router.post(`/sortInfo`, async function (req, res, next) {
                 for (j = 0; j < row1.length; j++) {
                     cancer.push(row1[j])
                 }
-                row[i].cancer = cancer
-                data.push(row)
+                row[0].cancer = cancer
+                data.push(row[0])
             }
         } else if (sortInfo == '3') {
             for (let i = 0; i < rows.length; i++) {
@@ -94,8 +94,8 @@ router.post(`/sortInfo`, async function (req, res, next) {
                 for (j = 0; j < row1.length; j++) {
                     cancer.push(row1[j])
                 }
-                row[i].cancer = cancer
-                data.push(row)
+                row[0].cancer = cancer
+                data.push(row[0])
             }
         } else if (sortInfo == '4') {
             for (let i = 0; i < rows.length; i++) {
@@ -104,8 +104,8 @@ router.post(`/sortInfo`, async function (req, res, next) {
                 for (j = 0; j < row1.length; j++) {
                     cancer.push(row1[j])
                 }
-                row[i].cancer = cancer
-                data.push(row)
+                row[0].cancer = cancer
+                data.push(row[0])
             }
         }
         res.json(data)

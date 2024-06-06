@@ -401,7 +401,7 @@ router.get(`/Allpatient`, async function (req, res, next) {
             for (j = 0; j < row1.length; j++) {
                 cancer.push(row1[j])
             }
-            row[i].cancer = cancer
+            row[0].cancer = cancer
             data.push(row[0])
         }
         res.json(data)
